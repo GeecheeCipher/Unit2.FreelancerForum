@@ -1,3 +1,4 @@
+/* State */
 const freeLancers = [
   {
     name: "Alice",
@@ -15,32 +16,54 @@ const freeLancers = [
     startingPrice: 70,
   },
 ];
-for (let i = 0; i < freeLancers.length; i++) {
-  console.log(freeLancers[i]);
+
+const addNameIntervalId = setInterval(addName, 1000); // Change to addName
+render();
+
+function render() {
+  const namesList = document.querySelector("#names"); // Change to namesList
+  const nameElements = freeLancers.map((freelancer) => {
+    const element = document.createElement("li");
+    element.textContent = `${freelancer.name} - ${freelancer.occupation} - ${freelancer.startingPrice}`;
+    return element;
+  });
+  namesList.replaceChildren(...nameElements);
 }
 
-const table = document.createElement("table");
-const root = document.getElementById("root");
-root.appendChild(table);
+function addName() {
+  const names = ["Alice", "Bob", "Carol", "Dave"];
+  const occupations = ["Writer", "Teacher", "Programmer", "Designer"];
+  const randomName = names[Math.floor(Math.random() * names.length)];
+  const randomOccupation =
+    occupations[Math.floor(Math.random() * occupations.length)];
+  const randomStartingPrice = Math.floor(Math.random() * 100) + 20;
 
-function addFreeLancer() {
-  const name = name[Math.floor(Math.random() * name.length)];
-  const occupation = occupation[Math.floor(Math.random() * occupation.length)];
-  const startingPrice =
-    startingPrice[Math.floor(Math.random() * startingPrice.length)];
+  const newFreelancer = {
+    name: randomName,
+    occupation: randomOccupation,
+    startingPrice: randomStartingPrice,
+  };
+  freeLancers.push(newFreelancer);
+
+  // Update the table
+  render();
 }
+
 function calculate(freeLancers) {
-    if (freeLancers.length === 0) {
-        return 0;
+  if (freeLancers.length === 0) {
+    return { total: 0, average: 0 };
+  }
+
+  const total = freeLancers.reduce(
+    (sum, freelancer) => sum + freelancer.startingPrice,
+    0
+  );
+  const average = total / freeLancers.length;
+
+  return { total, average };
 }
 
-const total = freeLancers.reduce((sum, freeLancer) => {
-    return sum + freeLancer.startingPrice;
-}, 0);
-
-return average = total / freeLancers.length;
-}
-
-const total = calculate(freeLancers);
-
-console.log('total starting price', total);
+// Example usage
+const { total, average } = calculate(freeLancers);
+console.log("Total starting price:", total);
+console.log("Average starting price:", average);
